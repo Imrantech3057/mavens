@@ -1,0 +1,25 @@
+@Library('mylibrary')_
+node ('built-in')
+{
+    stage('download')
+    {
+        cicd.download("maven")
+    }
+      stage('build')
+    {
+        cicd.build()
+    }
+    stage('deploy')
+    {
+        cicd.deploy("scriptpipeshared","172.31.22.103","testingapp")
+    }
+    stage('test')
+    {
+        cicd.download("FunctionalTesting")
+        cicd.runselenium("scriptpipeshared")
+    }
+    stage('delivery')
+    {
+        cicd.deploy("scriptpipeshared","172.31.27.69","produapp")
+    }
+}
