@@ -1,12 +1,28 @@
 @Library('mylibrary')_
-node ('built-in')
+pipeline
 {
-    stage('download')
+    agent any
+    stages
     {
-        cicd.download("maven")
-    }
-      stage('build')
-    {
-        cicd.build()
+        stage('download')
+        {
+            steps
+            {
+                script
+                {
+                cicd.download("maven")
+                }
+            }
+        }
+        stage('build')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.build()
+                }
+            }
+        }
     }
 }
