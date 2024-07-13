@@ -1,25 +1,59 @@
 @Library('mylibrary')_
-node ('built-in')
+pipeline
 {
-    stage('download')
+    agent any
+    stages
     {
-        cicd.download("maven")
-    }
-      stage('build')
-    {
-        cicd.build()
-    }
-    stage('deploy')
-    {
-        cicd.deploy("scriptpipeshared","172.31.22.103","testingapp")
-    }
-    stage('test')
-    {
-        cicd.download("FunctionalTesting")
-        cicd.runselenium("scriptpipeshared")
-    }
-    stage('delivery')
-    {
-        cicd.deploy("scriptpipeshared","172.31.27.69","produapp")
+        stage('download')
+        {
+            steps
+            {
+                script
+                {
+                cicd.download("maven")
+                }
+            }
+        }
+        stage('build')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.build()
+                }
+            }
+        }
+        stage('depploy')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.deploy("DeclarativePipeline","172.31.28.158","mytestapp")
+                }
+            }    
+        }
+        stage('test')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.download("FunctionalTesting")
+                    cicd.runselenium("DeclarativePipeline")
+                }
+            }
+        }
+        stage('delivery')
+        {
+            steps
+            {
+                script
+                {
+                    cicd.deploy("DeclarativePipeline","172.31.28.158","myprodapp")
+                }
+            }
+        }
     }
 }
